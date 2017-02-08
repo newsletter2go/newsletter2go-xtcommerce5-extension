@@ -1,0 +1,19 @@
+
+{if $smarty.const.XT_NEWSLETTER2GO_CHECKBOX eq 'true'}
+    <br />
+    <label for="cust_info[allow_newsletter]">{txt key=TEXT_NEWSLETTER_ACCEPT}</label>
+    {if $cust_info.newsletter eq '1'}
+        {form type=checkbox name="cust_info[allow_newsletter]" value=1 check=true}
+    {else}
+        {form type=checkbox name="cust_info[allow_newsletter]" value=1}
+    {/if}
+{/if}
+
+
+
+
+
+
+
+
+

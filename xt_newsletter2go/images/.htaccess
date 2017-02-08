@@ -1,0 +1,4 @@
+<Files runner.png>
+    Order Deny,Allow
+    Allow from all
+</Files>

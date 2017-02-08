@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xtcommerceplugin>
+    <language_content>
+        <phrase>
+            <key>TEXT_NL2GO_NEWSLETTER_STATUS</key>
+            <class>admin</class>
+            <en>
+                <value><![CDATA[Receiving Newsletter]]></value>
+            </en>
+            <de>
+                <value><![CDATA[Newsletter abonniert]]></value>
+            </de>
+        </phrase>
+        <phrase>
+            <key>TEXT_XT_NEWSLETTER2GO_PORTAL</key>
+            <class>admin</class>
+            <en>
+                <value><![CDATA[Newsletter2Go]]></value>
+            </en>
+            <de>
+                <value><![CDATA[Newsletter2Go]]></value>
+            </de>
+        </phrase>
+        <phrase>
+            <key>XT_NEWSLETTER2GO_API_KEY_TITLE</key>
+            <class>admin</class>
+            <en>
+                <value><![CDATA[API Password]]></value>
+            </en>
+            <de>
+                <value><![CDATA[Schnittstellen Passwort]]></value>
+            </de>
+        </phrase>
+        <phrase>
+            <key>XT_NEWSLETTER2GO_API_USER_TITLE</key>
+            <class>admin</class>
+            <en>
+                <value><![CDATA[API Username]]></value>
+            </en>
+            <de>
+                <value><![CDATA[Schnittstellen Benutzername]]></value>
+            </de>
+        </phrase>
+        <phrase>
+            <key>XT_NEWSLETTER2GO_CHECKBOX_TITLE</key>
+            <class>admin</class>
+            <en>
+                <value><![CDATA[Display Newsletter Checkbox at registration]]></value>
+            </en>
+            <de>
+                <value><![CDATA[Newsletter-Checkbox in Anmeldung]]></value>
+            </de>
+        </phrase>
+        <phrase>
+            <key>XT_NEWSLETTER2GO_LOGIN_MAIL_TITLE</key>
+            <class>admin</class>
+            <en>
+                <value><![CDATA[Username]]></value>
+            </en>
+            <de>
+                <value><![CDATA[Benutzername]]></value>
+            </de>
+        </phrase>
+        <phrase>
+            <key>XT_NEWSLETTER2GO_LOGIN_PASS_TITLE</key>
+            <class>admin</class>
+            <en>
+                <value><![CDATA[Password]]></value>
+            </en>
+            <de>
+                <value><![CDATA[Passwort]]></value>
+            </de>
+        </phrase>
+        <phrase>
+            <key>TEXT_NEWSLETTER_ACCEPT</key>
+            <class>store</class>
+            <en>
+                <value><![CDATA[Receive Newsletter]]></value>
+            </en>
+            <de>
+                <value><![CDATA[Newsletter abonnieren]]></value>
+            </de>
+        </phrase>
+        <phrase>
+            <key>TEXT_NEWSLETTER_CHECKOUT</key>
+            <class>store</class>
+            <de>
+                <value><![CDATA[Ich möchte Newsletter erhalten]]></value>
+            </de>
+            <en>
+                <value><![CDATA[I would like to receive newsletters]]></value>
+            </en>
+        </phrase>
+    </language_content>
+</xtcommerceplugin>

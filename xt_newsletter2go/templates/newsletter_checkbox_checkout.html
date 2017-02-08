@@ -1,0 +1,8 @@
+{if $smarty.const.XT_NEWSLETTER2GO_CHECKBOX_CHECKOUT eq 'true'}
+    {if $newsletter2go neq '1'}
+        <p>
+            {form type=checkbox name=subscribe value=1}
+            <label>{txt key=TEXT_NEWSLETTER_CHECKOUT}</label>
+        </p>
+    {/if}
+{/if}

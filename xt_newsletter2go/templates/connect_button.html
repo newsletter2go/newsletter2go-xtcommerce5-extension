@@ -1,0 +1,36 @@
+{literal}
+<script type="text/javascript">
+    $(document).ready(function() {
+        var interval = setInterval(replaceButton, 500);
+        function replaceButton() {
+             $("input[name='conf_XT_NEWSLETTER2GO_CONNECTBUTTON_shop_1']").replaceWith('<div class="x-form-item"><div class="x-form-element"><a id="n2goConnectBtn" href="{/literal}{$connectUrl}{literal}" target="_blank">{/literal}{txt key=XT_NEWSLETTER2GO_CONNECTBUTTON_TITLE}{literal}</a></div></div>');
+            if($("#n2goConnectBtn")) {
+                clearInterval(interval);
+            }
+        }
+    });
+</script>
+<style>
+    #n2goConnectBtn {
+        color: #fff;
+        background-color: #00baff;
+        display: inline-block;
+        margin-bottom: 0;
+        font-weight: normal;
+        text-align: center;
+        vertical-align: middle;
+        touch-action: manipulation;
+        cursor: pointer;
+        border: 1px solid #00a7e6;
+        white-space: nowrap;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857;
+        border-radius: 4px;
+        -webkit-user-select: none;
+        margin-left:100px;
+        text-decoration:none
+    }
+</style>
+
+{/literal}

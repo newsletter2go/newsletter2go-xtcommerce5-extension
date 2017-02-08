@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xtcommerceplugin>
+<title>Newsletter2Go E-Mail Marketing</title>
+<version>4.0.01</version>
+<code>xt_newsletter2go</code>
+<url>https://www.newsletter2go.de</url>
+<description>Das Newsletter2Go-Plugin synchronisiert automatisch Kundendaten und übernimmt Artikel per Eingabe der Artikelnummer in Ihren Newsletter</description>
+<type>marketing</type>
+<developer>xt:Commerce</developer>
+<marketplace_link><![CDATA[http://addons.xt-commerce.com/index.php?page=product&info=723]]></marketplace_link>
+<icon>newsletter2go.png</icon>
+
+<db_install><![CDATA[
+//$db->Execute("INSERT INTO ".TABLE_ADMIN_NAVIGATION." (`pid` ,`text` ,`icon` ,`url_i` ,`url_d` ,`sortorder` ,`parent` ,`type` ,`navtype`) VALUES (NULL , 'xt_newsletter2go_portal', '../plugins/xt_newsletter2go/images/runner.png', '../plugins/xt_newsletter2go/xtAdmin/nl2go_login.php', '', '3500', 'shop', 'I', 'W');");
+$db->Execute("ALTER TABLE ".TABLE_CUSTOMERS." ADD COLUMN `nl2go_newsletter_status` INTEGER UNSIGNED NOT NULL DEFAULT '0' AFTER `campaign_id`;");
+$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+$charactersLength = strlen($characters);
+$randomString = '';
+for ($i = 0; $i < 40; $i++) {
+    $randomString .= $characters[rand(0, $charactersLength - 1)];
+}
+$db->Execute("UPDATE " . TABLE_PLUGIN_CONFIGURATION . " SET config_value = '" . $randomString . "' where config_key = 'XT_NEWSLETTER2GO_API_KEY' and shop_id = 1");
+]]>
+</db_install>
+<db_uninstall><![CDATA[
+  //  $db->Execute("DELETE FROM ".TABLE_ADMIN_NAVIGATION." WHERE text = 'xt_newsletter2go_portal'");
+    $db->Execute("ALTER TABLE ".TABLE_CUSTOMERS." DROP COLUMN `nl2go_newsletter_status`;");
+]]>
+</db_uninstall>
+<plugin_code>
+    <code>
+        <hook>login_create_account_tpl</hook>
+        <phpcode>
+            <![CDATA[
+                require_once _SRV_WEBROOT._SRV_WEB_PLUGINS.'xt_newsletter2go/hooks/login_create_account_tpl.php';
+            ]]>
+        </phpcode>
+        <order>1</order>
+        <active>1</active>
+    </code>
+    <code>
+        <hook>checkout_tpl_form</hook>
+        <phpcode>
+            <![CDATA[
+                require_once _SRV_WEBROOT._SRV_WEB_PLUGINS.'xt_newsletter2go/hooks/checkout_tpl_form.php';
+            ]]>
+        </phpcode>
+        <order>2</order>
+        <active>1</active>
+    </code>
+    <code>
+        <hook>class.plugin_installed.php:_getParams_bottom</hook>
+        <phpcode>
+            <![CDATA[
+                require_once _SRV_WEBROOT._SRV_WEB_PLUGINS.'xt_newsletter2go/hooks/connect_button.php';
+            ]]>
+        </phpcode>
+        <order>2</order>
+        <active>1</active>
+    </code>
+    <code>
+        <hook>class.customer.php:_buildCustomerData_bottom</hook>
+        <phpcode>
+        <![CDATA[
+            if (XT_NEWSLETTER2GO_CHECKBOX=='true') {
+                if ($data['allow_newsletter']!='1') $data['allow_newsletter']='0';
+                $customer_data_array['nl2go_newsletter_status'] = $data['allow_newsletter'];
+            }
+        ]]>
+        </phpcode>
+        <order>1</order>
+        <active>1</active>
+    </code>
+    <code>
+        <hook>module_checkout.php:checkout_process_data</hook>
+        <phpcode>
+            <![CDATA[
+            if (XT_NEWSLETTER2GO_CHECKBOX_CHECKOUT=='true') {
+                $table = TABLE_CUSTOMERS;
+                $subscribed = $_POST['subscribe'];
+                $subscribed = ($subscribed ? 1 : 0);
+                $customer_id = $_SESSION['customer']->customers_id;
+                $sql = "UPDATE $table SET nl2go_newsletter_status = $subscribed WHERE customers_id= $customer_id";
+                $db->Execute($sql);
+            }
+        ]]>
+        </phpcode>
+        <order>1</order>
+        <active>1</active>
+    </code>
+</plugin_code>
+
+<configuration>
+	<config>
+	    <key>XT_NEWSLETTER2GO_API_USER</key>
+	    <type>textfield</type>
+	    <value>Newsletter2GoApiUser</value>
+	    <de>
+	        <title>Schnittstellen Benutzername</title>
+	    </de>
+	    <en>
+	        <title>API Username</title>
+	    </en>
+	</config>
+    <config>
+        <key>XT_NEWSLETTER2GO_API_KEY</key>
+        <type>textfield</type>
+        <value></value>
+        <de>
+            <title>Schnittstellen Passwort</title>
+        </de>
+        <en>
+            <title>API Password</title>
+        </en>
+    </config>
+    <config>
+        <key>XT_NEWSLETTER2GO_CHECKBOX</key>
+        <type>dropdown</type>
+        <url>conf_truefalse</url>
+        <value>true</value>
+        <de>
+            <title>Newsletter-Checkbox in Anmeldung</title>
+        </de>
+        <en>
+            <title>Display Newsletter Checkbox at registration</title>
+        </en>
+    </config>
+    <config>
+        <key>XT_NEWSLETTER2GO_CHECKBOX_CHECKOUT</key>
+        <type>dropdown</type>
+        <url>conf_truefalse</url>
+        <value>true</value>
+        <de>
+            <title>Newsletter-Checkbox in Zur Kasse</title>
+        </de>
+        <en>
+            <title>Display Newsletter Checkbox at checkout</title>
+        </en>
+    </config>
+    <config>
+        <key>XT_NEWSLETTER2GO_CONNECTBUTTON</key>
+        <type>hidden</type>
+        <value></value>
+        <de>
+            <title>Connect to Newsletter2Go</title>
+        </de>
+        <en>
+            <title>Connect to Newsletter2Go</title>
+        </en>
+    </config>
+</configuration>
+
+<language_content>
+    <phrase>
+        <key>TEXT_XT_NEWSLETTER2GO_PORTAL</key>
+        <class>admin</class>
+        <en>
+            <value>Newsletter2Go</value>
+        </en>
+        <de>
+            <value>Newsletter2Go</value>
+        </de>
+    </phrase>
+    <phrase>
+       <key>TEXT_NL2GO_NEWSLETTER_STATUS</key>
+       <class>admin</class>
+       <de>
+           <value>Newsletter abonniert</value>
+       </de>
+       <en>
+           <value>Receiving Newsletter</value>
+       </en>
+    </phrase>
+    <phrase>
+        <key>TEXT_NEWSLETTER_ACCEPT</key>
+        <class>store</class>
+        <de>
+            <value>Newsletter abonnieren</value>
+        </de>
+        <en>
+            <value>Receive Newsletter</value>
+        </en>
+    </phrase>
+    <phrase>
+        <key>TEXT_NEWSLETTER_CHECKOUT</key>
+        <class>store</class>
+        <de>
+            <value>Ich möchte Newsletter erhalten</value>
+        </de>
+        <en>
+            <value>I would like to receive newsletters</value>
+        </en>
+    </phrase>
+    <phrase>
+        <key>TEXT_NL2GO_NO_API</key>
+        <class>admin</class>
+        <de>
+            <value>Please enter API Username and API Key in order to connect to Newsletter2Go.</value>
+        </de>
+        <en>
+            <value>Please enter API Username and API Key in order to connect to Newsletter2Go.</value>
+        </en>
+    </phrase>
+</language_content>
+</xtcommerceplugin>
