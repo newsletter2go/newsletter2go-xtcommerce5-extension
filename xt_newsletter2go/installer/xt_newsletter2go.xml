@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xtcommerceplugin>
 <title>Newsletter2Go E-Mail Marketing</title>
-<version>4.0.01</version>
+<version>4.0.00</version>
 <code>xt_newsletter2go</code>
 <url>https://www.newsletter2go.de</url>
 <description>Das Newsletter2Go-Plugin synchronisiert automatisch Kundendaten und übernimmt Artikel per Eingabe der Artikelnummer in Ihren Newsletter</description>

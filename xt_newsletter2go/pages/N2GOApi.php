@@ -35,7 +35,7 @@ class N2GOApi
         $table_plugin_code = TABLE_PLUGIN_CODE;
         $api_plugin = 'xt_newsletter2go';
         $sql_plugin = "
-                SELECT plugin_status
+                SELECT $table_plugin_products.plugin_status
                 FROM $table_plugin_products
                     INNER JOIN $table_plugin_code
                         ON $table_plugin_products.plugin_id = $table_plugin_code.plugin_id
@@ -390,19 +390,25 @@ class N2GOApi
 
     private function getGroups(&$output)
     {
-        $table_groups = TABLE_CUSTOMERS_STATUS_DESCRIPTION;
-        $table_customers = TABLE_CUSTOMERS;
-        $sql_groups = "SELECT DISTINCT customers_status_id, customers_status_name "
-            . "FROM $table_groups "
-            . "WHERE language_code = 'en'";
-        $res = $this->db->getAll($sql_groups);
+        global $store_handler;
+        $storeId = $store_handler->shop_id;
+
+        $tableGroups = TABLE_CUSTOMERS_STATUS_DESCRIPTION;
+        $tableCustomers = TABLE_CUSTOMERS;
+        $tableConfig = TABLE_CONFIGURATION_MULTI . $storeId;
+
+        $sqlGroups = "SELECT DISTINCT customers_status_id, customers_status_name "
+            . "FROM $tableGroups "
+            . "WHERE language_code IN "
+            . "(SELECT config_value FROM $tableConfig WHERE config_key = '_STORE_LANGUAGE') AND customers_status_id > 0";
+        $res = $this->db->getAll($sqlGroups);
 
         $resGroups = array();
         foreach ($res as $field => $row) {
-            $sql_count = "SELECT COUNT(*) AS count "
-                . "FROM $table_customers "
+            $sqlCount = "SELECT COUNT(*) AS count "
+                . "FROM $tableCustomers "
                 . "WHERE customers_status = " . $row['customers_status_id'];
-            $count = $this->db->Execute($sql_count);
+            $count = $this->db->Execute($sqlCount);
 
             $resGroups[$field]['id'] = is_null($row['customers_status_id']) ? '' : $row['customers_status_id'];
             $resGroups[$field]['name'] = is_null($row['customers_status_name']) ? '' : $row['customers_status_name'];

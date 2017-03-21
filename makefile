@@ -1,5 +1,5 @@
 version = 0_0_00
-outfile = XtCommerce_nl2go_$(version).zip
+outfile = XtCommerce5_nl2go_$(version).zip
 
 $(outfile):
 	zip -r  build.zip ./xt_newsletter2go/*
