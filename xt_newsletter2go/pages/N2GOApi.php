@@ -356,7 +356,7 @@ class N2GOApi
     {
         $postEmail = filter_input(INPUT_POST, 'email');
         if (isset($postEmail)) {
-            $email = function_exists('mysql_real_escape_string') ? mysql_real_escape_string($postEmail) : mysqli_real_escape_string($postEmail);
+            $email = mysqli_real_escape_string($this->db->_connectionID, $postEmail);
             $table_customers = TABLE_CUSTOMERS;
             $sql_customers =
                 "UPDATE $table_customers SET nl2go_newsletter_status = 0 WHERE customers_email_address = '" . $email .
@@ -371,7 +371,7 @@ class N2GOApi
     {
         $postEmail = filter_input(INPUT_POST, 'email');
         if (isset($postEmail)) {
-            $email = function_exists('mysql_real_escape_string') ? mysql_real_escape_string($postEmail) : mysqli_real_escape_string($postEmail);
+            $email = mysqli_real_escape_string($this->db->_connectionID, $postEmail);
             $table_customers = TABLE_CUSTOMERS;
             $sql_customers =
                 "UPDATE $table_customers SET nl2go_newsletter_status = 1 WHERE customers_email_address = '" . $email .
