@@ -1,27 +1,29 @@
-<Files *.xml>
-    <IfModule !mod_authz_core.c>
-Order Deny,Allow
-Deny from all
-	</IfModule>
-	<IfModule mod_authz_core.c>
-		Require all denied
-	</IfModule>
-</Files>
-<Files *.php>
-    <IfModule !mod_authz_core.c>
-Order Allow,Deny
-Allow from all
-	</IfModule>
+#Allow access to php files
+<FilesMatch "\.(?i:php)$">
+	Order Allow,Deny
+        Allow from all
+	# Required for apache versions >= 2.4
 	<IfModule mod_authz_core.c>
 		Require all granted
 	</IfModule>
-</Files>
-<Files *.html>
-    <IfModule !mod_authz_core.c>
-Order Deny,Allow
-Deny from all
-	</IfModule>
+</FilesMatch>
+
+#Deny access to html files
+<FilesMatch "\.(?i:html)$">
+	Order Allow,Deny
+        Deny from all
+	# Required for apache versions >= 2.4
 	<IfModule mod_authz_core.c>
 		Require all denied
 	</IfModule>
-</Files>
+</FilesMatch>
+
+#Deny access to xml files
+<FilesMatch "\.(?i:xml)$">
+	Order Allow,Deny
+        Deny from all
+	# Required for apache versions >= 2.4
+	<IfModule mod_authz_core.c>
+		Require all denied
+	</IfModule>
+</FilesMatch>
