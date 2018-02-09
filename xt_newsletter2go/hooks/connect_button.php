@@ -11,7 +11,10 @@ if (empty($this->url_data['save']) && !$this->url_data['get_singledata']) {
 
     $edit_data = $this->getConfigHeaderData();
 
-    if ($this->url_data['edit_id'] && $edit_data['header']['conf_XT_NEWSLETTER2GO_API_KEY_shop_' . $shop_id] && $edit_data['header']['conf_XT_NEWSLETTER2GO_API_USER_shop_' . $shop_id]) {
+    if ($this->url_data['edit_id']
+        && $edit_data['header']['conf_XT_NEWSLETTER2GO_API_KEY_shop_' . $shop_id]
+        && $edit_data['header']['conf_XT_NEWSLETTER2GO_API_USER_shop_' . $shop_id]
+    ) {
 
         $table = TABLE_PLUGIN_PRODUCTS;
         $pluginVersion = $db->GetOne("SELECT version FROM $table WHERE code = 'xt_newsletter2go'");
@@ -29,22 +32,24 @@ if (empty($this->url_data['save']) && !$this->url_data['get_singledata']) {
         $langCode = $db->GetOne("SELECT config_value FROM $table WHERE config_key = '_STORE_LANGUAGE'");
         $queryParams['language'] = $langCode;
 
-        $record = $db->Execute("SELECT * FROM " . TABLE_MANDANT_CONFIG . " where shop_id =?", array($shop_id));
-        $shop_url = $record->fields['shop_ssl'] != 'no_ssl' ? $record->fields['shop_https'] : $record->fields['shop_http'];
-        $queryParams['url'] = $shop_url;
+        $http = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https://' : 'http://';
+        $baseUrl = $http . $_SERVER['SERVER_NAME'] . dirname($_SERVER["REQUEST_URI"] . '?') . '/';
+        $baseUrl = str_replace(_SRV_WEB_ADMIN, '', $baseUrl);
+        $queryParams['url'] = $baseUrl;
+        $queryParams['callback'] = $baseUrl . 'plugins/xt_newsletter2go/pages/callback.php/';
 
         $queryParams['subShopId'] = $shop_id;
         $connectUrl = N2GO_INTEGRATION_URL . '?' . http_build_query($queryParams);
 
-        $tpl_data = array('show_n2go_connect' => true, 'connectUrl' => $connectUrl);
+        $tplData = array('show_n2go_connect' => true, 'connectUrl' => $connectUrl);
 
         $tpl = 'connect_button.html';
         $template = new Template();
         $template->getTemplatePath($tpl, 'xt_newsletter2go', '', 'plugin');
 
-        $tmp_data = $template->getTemplate('xt_newsletter2go_smarty', $tpl, $tpl_data);
+        $tmpData = $template->getTemplate('xt_newsletter2go_smarty', $tpl, $tplData);
 
-        echo $tmp_data;
+        echo $tmpData;
     }
 }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xtcommerceplugin>
 <title>Newsletter2Go E-Mail Marketing</title>
-<version>4.0.01</version>
+<version>4.0.02</version>
 <code>xt_newsletter2go</code>
 <url>https://www.newsletter2go.de</url>
 <description>Das Newsletter2Go-Plugin synchronisiert automatisch Kundendaten und übernimmt Artikel per Eingabe der Artikelnummer in Ihren Newsletter</description>
@@ -88,6 +88,16 @@ $db->Execute("UPDATE " . TABLE_PLUGIN_CONFIGURATION . " SET config_value = '" . 
         <order>1</order>
         <active>1</active>
     </code>
+    <code>
+        <hook>checkout_success_tpl</hook>
+        <phpcode>
+            <![CDATA[
+                require_once _SRV_WEBROOT._SRV_WEB_PLUGINS.'xt_newsletter2go/hooks/checkout_success_tpl.php';
+            ]]>
+        </phpcode>
+        <order>1</order>
+        <active>1</active>
+    </code>
 </plugin_code>
 
 <configuration>
@@ -135,6 +145,29 @@ $db->Execute("UPDATE " . TABLE_PLUGIN_CONFIGURATION . " SET config_value = '" . 
         </de>
         <en>
             <title>Display Newsletter Checkbox at checkout</title>
+        </en>
+    </config>
+    <config>
+        <key>XT_NEWSLETTER2GO_CHECKBOX_TRACKING</key>
+        <type>dropdown</type>
+        <url>conf_truefalse</url>
+        <value>true</value>
+        <de>
+            <title>Conversion Tracking</title>
+        </de>
+        <en>
+            <title>Conversion Tracking</title>
+        </en>
+    </config>
+    <config>
+        <key>XT_NEWSLETTER2GO_COMPANY_ID</key>
+        <type>hidden</type>
+        <value></value>
+        <de>
+            <title>Firmen id</title>
+        </de>
+        <en>
+            <title>Company id</title>
         </en>
     </config>
     <config>
